@@ -16,7 +16,6 @@ Event cleanup happens automatically when the component is unmounted, but can be 
   </div>
 </template>
 <script setup>
-  import { onUnmounted } from 'vue';
   import { useMediaQuery } from 'vue-media-query';
 
   // Use a media query that returns a boolean ref
