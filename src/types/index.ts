@@ -14,5 +14,7 @@ export interface ScreenState {
 }
 export interface ScreensOptions extends ConfigurableWindow {}
 
-export interface MediaQueryOptions extends ConfigurableWindow {}
-export type MediaQueryCallback = (matches: boolean, ev?: MediaQueryListEvent) => void;
+export type MediaQueryCallback = (ev?: MediaQueryListEvent) => void;
+export interface MediaQueryOptions extends ConfigurableWindow {
+  callback?: MediaQueryCallback;
+}

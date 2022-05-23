@@ -1,23 +1,26 @@
-import { MediaQueryCallback, MediaQueryOptions } from 'types';
+import { ref, watch } from 'vue';
+import { MediaQueryOptions } from 'types';
 
 export const isClient = typeof window !== 'undefined';
 export const defaultWindow = isClient ? window : undefined;
 
 export function useMediaQuery(
   query: string, // "(min-width: 300px)"
-  callback: MediaQueryCallback,
   options: MediaQueryOptions = {}
 ) {
   const { window = defaultWindow } = options;
   let mediaQuery: MediaQueryList | undefined;
   const isSupported = window && 'matchMedia' in window;
+  const matches = ref(false);
 
   const _callback = (ev: MediaQueryListEvent) => {
-    callback(ev.matches, ev);
+    if (options.callback) _callback(ev);
+    matches.value = ev.matches;
   };
 
   const cleanup = () => {
     if (mediaQuery) {
+      console.log('CLEANUP');
       mediaQuery.removeEventListener('change', _callback);
       mediaQuery = undefined;
     }
@@ -27,15 +30,15 @@ export function useMediaQuery(
   if (isSupported && query) {
     mediaQuery = window.matchMedia(query);
     mediaQuery.addEventListener('change', _callback);
-    callback(mediaQuery.matches);
+    matches.value = mediaQuery.matches;
   }
 
-  const stop = () => {
-    cleanup();
-  };
+  watch(
+    () => matches.value,
+    (val) => {
+      if (val === undefined) cleanup();
+    }
+  );
 
-  return {
-    isSupported,
-    stop,
-  };
+  return matches;
 }
