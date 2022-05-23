@@ -21,8 +21,8 @@ A collection of utility plugins and functions when using media queries in Vue.
     only screen and (-webkit-min-device-pixel-ratio: 2), 
     only screen and (min-device-pixel-ratio: 2)`);
 
-  // Cleanup on unmount when needed
-  onUnmounted(() => (isHighDPI = undefined));
+  // Cleanup if needed
+  onUnmounted(() => (isHighDPI.value = undefined));
 </script>
 ```
 

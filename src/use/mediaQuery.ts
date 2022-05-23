@@ -20,7 +20,6 @@ export function useMediaQuery(
 
   const cleanup = () => {
     if (mediaQuery) {
-      console.log('CLEANUP');
       mediaQuery.removeEventListener('change', _callback);
       mediaQuery = undefined;
     }
