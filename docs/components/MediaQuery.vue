@@ -1,10 +1,10 @@
 <script setup>
 import { useMediaQuery } from '../../src/main';
-const isHighDPI = useMediaQuery(`@media only screen and (-moz-min-device-pixel-ratio: 2), 
-  only screen and (-o-min-device-pixel-ratio: 2/1), 
-  only screen and (-webkit-min-device-pixel-ratio: 2), 
+const isHighDPI = useMediaQuery(`@media only screen and (-moz-min-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (-webkit-min-device-pixel-ratio: 2),
   only screen and (min-device-pixel-ratio: 2)`);
-const isTablet = useMediaQuery('(min-width: 576px)');
+const isTablet = useMediaQuery('(min-width: 576px)', (ev) => console.log('CALLBACK happened', ev));
 function clear() {
   isHighDPI.value = undefined;
   isTablet.value = undefined;
