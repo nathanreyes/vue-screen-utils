@@ -6,6 +6,8 @@ Import and use the `useMediaQuery` function to evaluate a raw media query and re
 
 If you wish to receive a callback of the raw media query event, provide the callback function as the second argument.
 
+Cleanup happens automatically when the component is unmounted, but can be manually triggered by setting the ref value to `undefined`.
+
 ```html
 <template>
   <div>
@@ -27,8 +29,8 @@ If you wish to receive a callback of the raw media query event, provide the call
     (ev) => console.log(`Callback: ${ev}`)
   );
 
-  // Cleanup if needed
-  onUnmounted(() => (isHighDPI.value = undefined));
+  // Cleanup manually if needed
+  isHighDPI.value = undefined;
 </script>
 ```
 
