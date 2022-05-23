@@ -2,7 +2,7 @@ Vue plugin and use functions for easily using media queries.
 
 ### Screens Plugin
 
-vue-media-query provides a plugin that allows for defining screen size configuration and using that configuration to create computed props as needed.
+Use the `screens` plugin to map screen size keys to media query values and derive computed props from the screen sizes.
 
 1. Import the plugin.
 
@@ -36,6 +36,8 @@ app.use(screens, {
   });
 </script>
 ```
+
+Queries are evaluated using a mobile-first approach, so `columnCount.value` will evaluate to 1 (the `default`) until the screen size crosses the `md` boundary, at which point it will evaluate to 2 until it crosses the `xl` boundary, at which point it will evaluate to 3.
 
 ### Use Screens Function
 

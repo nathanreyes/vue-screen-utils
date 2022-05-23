@@ -3,11 +3,16 @@ import clear from 'rollup-plugin-clear';
 
 export default {
   input: 'src/main.ts',
-  output: {
-    dir: 'dist',
-    format: 'cjs',
-    sourcemap: true,
-  },
+  output: [
+    {
+      format: 'esm',
+      file: 'dist/lib.mjs',
+    },
+    {
+      format: 'cjs',
+      file: 'dist/lib.js',
+    },
+  ],
   plugins: [
     typescript({
       tsconfigOverride: {
