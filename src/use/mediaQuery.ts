@@ -1,11 +1,12 @@
 import { ref, watch } from 'vue';
-import { MediaQueryOptions } from 'types';
+import { MediaQueryCallback, MediaQueryOptions } from 'types';
 
 export const isClient = typeof window !== 'undefined';
 export const defaultWindow = isClient ? window : undefined;
 
 export function useMediaQuery(
-  query: string, // "(min-width: 300px)"
+  query: string, // "(min-width: 300px)",
+  callback: MediaQueryCallback,
   options: MediaQueryOptions = {}
 ) {
   const { window = defaultWindow } = options;
@@ -14,7 +15,7 @@ export function useMediaQuery(
   const matches = ref(false);
 
   const _callback = (ev: MediaQueryListEvent) => {
-    if (options.callback) _callback(ev);
+    if (callback) callback(ev);
     matches.value = ev.matches;
   };
 

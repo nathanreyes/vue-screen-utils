@@ -2,7 +2,9 @@ A collection of utility plugins and functions when using media queries in Vue.
 
 ### Use Media Query
 
-2. Import and use the `useMediaQuery` function to evaluate a raw media query and return a boolean ref that will update with the media query.
+Import and use the `useMediaQuery` function to evaluate a raw media query and return a boolean ref that will update with the media query.
+
+If you wish to receive a callback of the raw media query event, provide the callback function as the second argument.
 
 ```html
 <template>
@@ -16,10 +18,14 @@ A collection of utility plugins and functions when using media queries in Vue.
   import { useMediaQuery } from 'vue-media-query';
 
   // Use a media query that returns a boolean ref
-  const isHighDPI = useMediaQuery(`@media only screen and (-moz-min-device-pixel-ratio: 2), 
+  const isHighDPI = useMediaQuery(
+    `@media only screen and (-moz-min-device-pixel-ratio: 2), 
     only screen and (-o-min-device-pixel-ratio: 2/1), 
     only screen and (-webkit-min-device-pixel-ratio: 2), 
-    only screen and (min-device-pixel-ratio: 2)`);
+    only screen and (min-device-pixel-ratio: 2)`,
+    // Optional callback with raw event
+    (ev) => console.log(`Callback: ${ev}`)
+  );
 
   // Cleanup if needed
   onUnmounted(() => (isHighDPI.value = undefined));
