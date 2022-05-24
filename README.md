@@ -33,7 +33,7 @@ Event cleanup happens automatically when the component is unmounted, but can be 
 </script>
 ```
 
-### Use Screens Function
+### Use Screens
 
 Use the `useScreens` function to easily create computed refs derived from custom screen size keys.
 
@@ -92,4 +92,4 @@ app.use(screens, {
 });
 ```
 
-2. Repeat step 2 from the _Use Screens Function_ method above.
+2. Repeat step 2 from the _Use Screens_ method above.
