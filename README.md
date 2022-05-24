@@ -35,9 +35,7 @@ Event cleanup happens automatically when the component is unmounted, but can be 
 
 ### Use Screens
 
-Use the `useScreens` function to easily create computed refs derived from custom screen size keys.
-
-1. Import and use the `useScreens` function within parent components that will provide the `$screens` function to nested components. Pass a config object that maps custom screen size keys to media query values.
+1. Import and use the `useScreens` function within parent components that will provide a `$screens` object to nested components. Pass a config object that maps custom screen size keys to media query values.
 
 ```html
 <!--Parent.vue-->
@@ -53,7 +51,7 @@ Use the `useScreens` function to easily create computed refs derived from custom
 </script>
 ```
 
-2. Inject `$screens` function in nested components. Call the function with a mapping of screen size keys (with optional default value) to any values you wish.
+2. Inject the `$screens` reactive object into nested components.
 
 ```html
 <!-- MyComponent.vue -->
@@ -61,17 +59,55 @@ Use the `useScreens` function to easily create computed refs derived from custom
   import { inject } from 'vue';
 
   const screens = inject('$screens');
-
-  // Create computed prop that will update any time the specified key boundaries have been crossed
-  const columnCount = screens({
-    default: 1,
-    md: 2,
-    xl: 3,
-  });
 </script>
 ```
 
-Queries are evaluated using a mobile-first approach, so `columnCount.value` will evaluate to 1 (the `default`) until the screen size crosses the `md` boundary, at which point it will evaluate to 2 until it crosses the `xl` boundary, at which point it will evaluate to 3.
+The value of `screens` is a reactive object of size keys mapped to the matched status of their respective media query.
+
+In the example above, if the viewport is '800px', then the `screens` value would be
+
+```js
+{
+  sm: true,
+  md: true,
+  lg: false,
+  xl: false
+}
+```
+
+#### List Matching Screens
+
+The `list()` function returns a computed property of matching screen size keys.
+
+```js
+const list = screens.list();
+console.log(list.value); // ['sm', 'md']
+```
+
+Pass a configuration object to map the matching keys to custom values.
+
+```js
+const mappedList = screens.list({ sm: 1, md: 2, lg: 3, xl: 4 });
+console.log(mappedList.value); // [1, 2]
+```
+
+### Resolve Max Screen
+
+The `resolve()` function will resolve the max matched screen. Pass a default value that will get returned if none of the sizes match.
+
+```js
+const screen = screens.resolve('');
+console.log(screen.value); // ['md']
+```
+
+Pass a configuration object to map the resolved key to a custom value.
+
+```js
+const mappedScreen = screens.resolve({ sm: 1, md: 2, lg: 3, xl: 4 }, 0);
+console.log(mappedScreen.value); // [2]
+```
+
+Queries are resolved using a mobile-first approach, so `mappedScreen.value` will evaluate to 0 (the default argument) until the screen size crosses the `sm` boundary, at which point it will evaluate to 1 until it crosses the `md` boundary, at which point it will evaluate to 2, and so on.
 
 ### Screens Plugin
 
