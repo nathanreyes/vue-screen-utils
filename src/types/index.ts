@@ -6,11 +6,11 @@ export interface ConfigurableWindow {
    */
   window?: Window;
 }
-export interface ScreenState {
+export interface ScreensState {
   screens: Record<string, string>;
   hasSetup: boolean;
   matches: Array<any>;
-  queries: MediaQueryList[];
+  queries: Record<string, MediaQueryList>;
 }
 export interface ScreensOptions extends ConfigurableWindow {}
 
