@@ -8,9 +8,9 @@ export interface ConfigurableWindow {
 }
 export interface ScreensState {
   screens: Record<string, string>;
-  hasSetup: boolean;
-  matches: Array<any>;
   queries: Record<string, MediaQueryList>;
+  matches: any;
+  hasSetup: boolean;
 }
 export interface ScreensOptions extends ConfigurableWindow {}
 

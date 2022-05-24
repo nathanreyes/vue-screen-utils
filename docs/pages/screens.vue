@@ -3,7 +3,7 @@ import { inject } from 'vue';
 const screens = inject('$screens');
 let columns = 2;
 if (screens) {
-  columns = screens({
+  columns = screens.resolve({
     default: 1,
     sm: 2,
     md: 3,
