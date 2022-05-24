@@ -1,4 +1,4 @@
-import { screens } from '../../src/main';
+import { screens } from '@vmq';
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(screens);

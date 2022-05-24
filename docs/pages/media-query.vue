@@ -1,5 +1,5 @@
 <script setup>
-import { useMediaQuery } from '../../src/main';
+import { useMediaQuery } from '@vmq';
 const isHighDPI = useMediaQuery(`@media only screen and (-moz-min-device-pixel-ratio: 2),
   only screen and (-o-min-device-pixel-ratio: 2/1),
   only screen and (-webkit-min-device-pixel-ratio: 2),
