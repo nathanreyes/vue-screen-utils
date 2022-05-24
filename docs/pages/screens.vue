@@ -1,9 +1,21 @@
 <script setup>
 import { inject } from 'vue';
 const screens = inject('$screens');
-let columns = 2;
+let resolve = '';
+let mappedResolve = null;
+let array = [];
+let mappedArray = [];
 if (screens) {
-  columns = screens.resolve({
+  resolve = screens.resolve();
+  mappedResolve = screens.resolve({
+    default: 1,
+    sm: 2,
+    md: 3,
+    lg: 4,
+    xl: 5,
+  });
+  array = screens.list();
+  mappedArray = screens.list({
     default: 1,
     sm: 2,
     md: 3,
@@ -11,13 +23,24 @@ if (screens) {
     xl: 5,
   });
 }
-// const columns = 5;
 </script>
 <template>
   <div>
     <h3>Screens</h3>
     <p>
-      Columns: <strong>{{ columns }}</strong>
+      <strong>{{ screens }}</strong>
+    </p>
+    <p>
+      Resolve: <strong>{{ resolve }}</strong>
+    </p>
+    <p>
+      Mapped Resolve: <strong>{{ mappedResolve }}</strong>
+    </p>
+    <p>
+      List: <strong>{{ array }}</strong>
+    </p>
+    <p>
+      Mapped List: <strong>{{ mappedArray }}</strong>
     </p>
   </div>
 </template>
