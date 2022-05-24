@@ -1,5 +1,5 @@
 import { App, Plugin } from 'vue';
-import createScreens from '../utils/createScreens';
+import initScreens from '../utils/initScreens';
 import { Screens } from '../types';
 
 const plugin: Plugin = {
@@ -8,8 +8,8 @@ const plugin: Plugin = {
     // app.config.globalProperties.$screens = (config) => {
     //   setupQueries();
     // };
-
-    app.provide('$screens', createScreens(screens));
+    const s = initScreens(screens);
+    app.provide('$screens', s);
   },
 };
 
