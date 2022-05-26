@@ -14,7 +14,6 @@ if (screens) {
     xl: 4,
   });
   current = screens.current;
-  console.log('current', current);
   mappedCurrent = screens.mapCurrent(
     {
       sm: 1,
