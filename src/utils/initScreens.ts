@@ -19,21 +19,25 @@ export default function (screens?: Screens) {
     });
   }
 
-  function resolve(config?: ScreensConfig, def?: any) {
-    return computed(() => {
-      const arr = list(config);
-      if (arr.value.length) return arr.value[arr.value.length - 1];
-      return def;
-    });
-  }
-
-  function list(config?: ScreensConfig): ComputedRef<any[]> {
+  function mapList(config?: ScreensConfig): ComputedRef<any[]> {
     return computed(() =>
       Object.keys(state.matches)
         .filter((key) => state.matches[key] === true)
         .map((key) => (config && has(config, key) ? config[key] : key))
     );
   }
+
+  const list = mapList();
+
+  function mapCurrent(config?: ScreensConfig, def?: any) {
+    return computed(() => {
+      const arr = mapList(config);
+      if (arr.value.length) return arr.value[arr.value.length - 1];
+      return def;
+    });
+  }
+
+  const current = mapCurrent(undefined, '');
 
   function cleanup() {
     Object.values(state.queries).forEach((query) => query.removeEventListener('change', refreshMatches));
@@ -52,5 +56,5 @@ export default function (screens?: Screens) {
   state.hasSetup = true;
   refreshMatches();
 
-  return extendReactive(state.matches, { list, listMap, min, minMap, max, maxMap, cleanup });
+  return extendReactive(state.matches, { list, mapList, current, mapCurrent, cleanup });
 }

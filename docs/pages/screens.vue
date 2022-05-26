@@ -1,27 +1,29 @@
 <script setup>
 import { inject } from 'vue';
 const screens = inject('$screens');
-let resolve = '';
-let mappedResolve = null;
-let array = [];
-let mappedArray = [];
+let list = [];
+let mappedList = [];
+let current = '';
+let mappedCurrent = 0;
 if (screens) {
-  resolve = screens.resolve();
-  mappedResolve = screens.resolve({
-    default: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
+  list = screens.list;
+  mappedList = screens.mapList({
+    sm: 1,
+    md: 2,
+    lg: 3,
+    xl: 4,
   });
-  array = screens.list();
-  mappedArray = screens.list({
-    default: 1,
-    sm: 2,
-    md: 3,
-    lg: 4,
-    xl: 5,
-  });
+  current = screens.current;
+  console.log('current', current);
+  mappedCurrent = screens.mapCurrent(
+    {
+      sm: 1,
+      md: 2,
+      lg: 3,
+      xl: 4,
+    },
+    0
+  );
 }
 </script>
 <template>
@@ -31,16 +33,16 @@ if (screens) {
       <strong>{{ screens }}</strong>
     </p>
     <p>
-      Resolve: <strong>{{ resolve }}</strong>
+      List: <strong>{{ list }}</strong>
     </p>
     <p>
-      Mapped Resolve: <strong>{{ mappedResolve }}</strong>
+      Mapped List: <strong>{{ mappedList }}</strong>
     </p>
     <p>
-      List: <strong>{{ array }}</strong>
+      Current: <strong>{{ current }}</strong>
     </p>
     <p>
-      Mapped List: <strong>{{ mappedArray }}</strong>
+      Mapped Current: <strong>{{ mappedCurrent }}</strong>
     </p>
   </div>
 </template>
