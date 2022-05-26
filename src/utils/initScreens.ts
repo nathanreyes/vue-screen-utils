@@ -52,7 +52,5 @@ export default function (screens?: Screens) {
   state.hasSetup = true;
   refreshMatches();
 
-  const result = extendReactive(state.matches, { resolve, list, cleanup });
-  watch(result, () => console.log(result));
-  return result;
+  return extendReactive(state.matches, { list, listMap, min, minMap, max, maxMap, cleanup });
 }
