@@ -1,5 +1,5 @@
-import { ComputedRef, computed, reactive, watch, watchEffect } from 'vue';
-import { has, isUndefined } from 'lodash-es';
+import { ComputedRef, computed, reactive } from 'vue';
+import { has } from 'lodash-es';
 import { ScreensState, Screens, ScreensConfig } from '../types';
 import buildMediaQuery from './buildMediaQuery';
 import defaultScreens from './defaultScreens';
