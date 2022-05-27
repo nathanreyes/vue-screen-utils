@@ -2,6 +2,12 @@
 
 A dependency-free collection of utility functions and plugins for using media queries in Vue 3.
 
+## Install package
+
+```console
+npm i vue-screen-utils
+```
+
 ## Use Media Query
 
 Import and use the `useMediaQuery` function to evaluate a raw media query and return a boolean ref that will update with the media query.
