@@ -5,7 +5,7 @@ A dependency-free collection of utility functions and plugins for using media qu
 ## Install package
 
 ```console
-npm i vue-screen-utils
+npm install vue-screen-utils
 ```
 
 ## Use Media Query
