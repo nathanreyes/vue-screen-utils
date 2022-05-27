@@ -1,6 +1,6 @@
 # vue-screen-utils
 
-A dependency-free collection of utility functions and plugins for using media queries in Vue.
+A dependency-free collection of utility functions and plugins for using media queries in Vue 3.
 
 ## Use Media Query
 

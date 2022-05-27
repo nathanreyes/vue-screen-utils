@@ -1,7 +1,7 @@
 {
   "name": "vue-screen-utils",
   "version": "0.0.1",
-  "description": "A dependency-free collection of utility functions and plugins when using media queries in Vue.",
+  "description": "A dependency-free collection of utility functions and plugins for using media queries in Vue 3.",
   "author": "Nathan Reyes <nathanreyes@me.com>",
   "main": "dist/lib.js",
   "module": "dist/lib.mjs",
