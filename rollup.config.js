@@ -1,5 +1,6 @@
-import typescript from 'rollup-plugin-typescript2';
 import clear from 'rollup-plugin-clear';
+import typescript from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: 'src/index.ts',
@@ -14,6 +15,9 @@ export default {
     },
   ],
   plugins: [
+    clear({
+      targets: ['./dist'],
+    }),
     typescript({
       tsconfigOverride: {
         compilerOptions: {
@@ -22,8 +26,9 @@ export default {
         include: null,
       },
     }),
-    clear({
-      targets: ['./dist'],
+    terser({
+      format: { comments: false },
+      compress: false,
     }),
   ],
 };
