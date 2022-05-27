@@ -1,13 +1,13 @@
 import { ComputedRef, computed, reactive } from 'vue';
-import { has } from 'lodash-es';
 import { ScreensState, Screens, ScreensConfig } from '../types';
+import { normalizeScreens } from './normalizeScreens';
 import buildMediaQuery from './buildMediaQuery';
 import defaultScreens from './defaultScreens';
 import extendReactive from './extendReactive';
 
 export default function (screens?: Screens) {
   const state = reactive<ScreensState>({
-    screens: screens || defaultScreens,
+    screens: normalizeScreens(screens || defaultScreens),
     queries: {},
     matches: {},
     hasSetup: false,
@@ -23,7 +23,7 @@ export default function (screens?: Screens) {
     return computed(() =>
       Object.keys(state.matches)
         .filter((key) => state.matches[key] === true)
-        .map((key) => (config && has(config, key) ? config[key] : key))
+        .map((key) => (config && config.hasOwnProperty(key) ? config[key] : key))
     );
   }
 
@@ -47,10 +47,10 @@ export default function (screens?: Screens) {
 
   if (state.hasSetup || !window || !('matchMedia' in window)) return;
   cleanup();
-  state.queries = Object.entries(state.screens).reduce((result, kv) => {
-    const mediaQuery = window.matchMedia(buildMediaQuery(kv[1]));
+  state.queries = state.screens.reduce((result, { name, values }) => {
+    const mediaQuery = window.matchMedia(buildMediaQuery(values));
     mediaQuery.addEventListener('change', refreshMatches);
-    result[kv[0]] = mediaQuery;
+    result[name] = mediaQuery;
     return result;
   }, {} as Record<string, MediaQueryList>);
   state.hasSetup = true;

@@ -24,8 +24,5 @@
     "typescript": "^4.6.4",
     "vue": "^3.2.35"
   },
-  "dependencies": {
-    "@types/lodash-es": "^4.17.6",
-    "lodash-es": "^4.17.21"
-  }
+  "dependencies": {}
 }

@@ -6,8 +6,19 @@ export interface ConfigurableWindow {
    */
   window?: Window;
 }
+
+export interface NormalizedScreenValue {
+  min: string;
+  max: string | undefined;
+  raw?: string | undefined;
+}
+
+export interface NormalizedScreen {
+  name: string;
+  values: NormalizedScreenValue[];
+}
 export interface ScreensState {
-  screens: Record<string, string>;
+  screens: NormalizedScreen[];
   queries: Record<string, MediaQueryList>;
   matches: any;
   hasSetup: boolean;
