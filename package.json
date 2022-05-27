@@ -1,7 +1,7 @@
 {
   "name": "vue-screen-utils",
   "version": "0.0.1",
-  "description": "",
+  "description": "A dependency-free collection of utility functions and plugins when using media queries in Vue.",
   "author": "Nathan Reyes <nathanreyes@me.com>",
   "main": "dist/lib.js",
   "module": "dist/lib.mjs",
@@ -23,6 +23,5 @@
     "rollup-plugin-typescript2": "^0.31.2",
     "typescript": "^4.6.4",
     "vue": "^3.2.35"
-  },
-  "dependencies": {}
+  }
 }

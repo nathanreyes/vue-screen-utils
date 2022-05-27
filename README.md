@@ -1,4 +1,4 @@
-A collection of utility plugins and functions when using media queries in Vue.
+A dependency-free collection of utility functions and plugins when using media queries in Vue.
 
 ### Use Media Query
 
