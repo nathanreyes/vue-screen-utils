@@ -61,9 +61,18 @@ Import and call the `useScreens` function within a parent component, passing a c
 </script>
 ```
 
+The `useScreens` function accepts a variety of formats.
+
+```js
+useScreens(['100px', '200px']); // Raw strings
+useScreens({ sm: '100px', md: '200px' }); // Object with string values
+useScreens({ sm: { min: '100px' }, md: { max: '100px' } }); // Object with object values
+useScreens({ sm: [{ min: '100px' }, { max: '200px' }] }); // Object with object array (multiple values)
+```
+
 The `useScreens` function will return a reactive [object](#screens-object). This object will also get injected into the parent's child components as `$screens` (or custom `injectKey`).
 
-See notes about cleanup[^2].
+See notes about [cleanup](#cleanup).
 
 ### Step 2. Inject the `$screens` reactive object into nested components.
 
@@ -101,7 +110,7 @@ The `list` computed property returns a list of media-matched screen size keys.
 console.log(screens.list.value); // ['sm', 'md']
 ```
 
-The `listMap()` function returns a computed list of mapped values mapped to the current matched size keys.
+The `listMap()` function returns a computed property list of custom values mapped to the current matched size keys.
 
 ```js
 const mappedList = screens.listMap({ sm: 1, md: 2, lg: 3, xl: 4 });
@@ -116,23 +125,16 @@ The `current` computed property returns the current max screen size key.
 console.log(screens.current.value); // 'md'
 ```
 
-The `currentMap()` function returns a computed value mapped to the `current` value. The default value (2nd argument) will return if no screen sizes are matched.
+The `currentMap()` function returns a computed property value mapped to the `current` key. The default value (2nd argument) will return if no screen sizes are matched.
 
 ```js
 const currentMap = screens.currentMap({ sm: 1, md: 2, lg: 3, xl: 4 }, 0);
 console.log(currentMap.value); // 2
 ```
 
-[^1]: The following are valid screen config values.
+#### Cleanup
 
-```js
-useScreens(['100px', '200px']); // Raw strings
-useScreens({ sm: '100px', md: '200px' }); // Object with string values
-useScreens({ sm: { min: '100px' }, md: { max: '100px' } }); // Object with object values
-useScreens({ sm: [{ min: '100px' }, { max: '200px' }] }); // Object with object array (multiple values)
-```
-
-[^2]: Event cleanup happens automatically when the parent component is unmounted, but can be manually called if needed.
+Event cleanup happens automatically when the parent component is unmounted, but can be manually called if needed.
 
 ```js
 const screens = useScreens({...});
@@ -141,7 +143,7 @@ screens.cleanup();
 
 ## Screens Plugin
 
-The `screens` plugin is exactly like the `useScreens` method, but allows for a screen configuration to be used application-wide.
+The `screens` plugin is exactly like the `useScreens` method above, but allows for a screen configuration to be used application-wide.
 
 ### Step 1. Import the plugin.
 
