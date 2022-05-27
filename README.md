@@ -1,6 +1,8 @@
-A dependency-free collection of utility functions and plugins when using media queries in Vue.
+# vue-screen-utils
 
-### Use Media Query
+A dependency-free collection of utility functions and plugins for using media queries in Vue.
+
+## Use Media Query
 
 Import and use the `useMediaQuery` function to evaluate a raw media query and return a boolean ref that will update with the media query.
 
@@ -16,7 +18,7 @@ Event cleanup happens automatically when the component is unmounted, but can be 
   </div>
 </template>
 <script setup>
-  import { useMediaQuery } from 'vue-media-query';
+  import { useMediaQuery } from 'vue-screen-utils';
 
   // Use a media query that returns a boolean ref
   const isHighDPI = useMediaQuery(
@@ -28,23 +30,24 @@ Event cleanup happens automatically when the component is unmounted, but can be 
     (ev) => console.log(`Callback: ${ev}`)
   );
 
-  // Cleanup manually if needed
+  // Cleanup manually if needed (auto-cleaned when component is unmounted)
   isHighDPI.value = undefined;
 </script>
 ```
 
-### Use Screens
+## Use Screens
 
-1. Import and use the `useScreens` function within parent components that will provide a `$screens` object to nested components. Pass a config object that maps custom screen size keys to media query values.
+### Step 1. Import and call `useScreens`
 
-Note: The configuration object should order the keys from smallest size to largest.
+Import and call the `useScreens` function within a parent component, passing a config object that maps custom screen size keys to media query values. Reference valid screen value formats[^1].
 
 ```html
 <!--Parent.vue-->
 <script setup>
-  import { useScreens } from 'vue-media-query';
+  import { useScreens } from 'vue-screen-utils';
 
   useScreens(
+    // Order from smallest to largest
     {
       sm: '640px', // (min-width: 640px)
       md: '768px', // (min-width: 768px)
@@ -58,14 +61,11 @@ Note: The configuration object should order the keys from smallest size to large
 </script>
 ```
 
-A `$screens` (or custom inject key) object will be inject into child components. Cleanup will happen automatically when the parent component is unmounted, but can be manually called if needed.
+The `useScreens` function will return a reactive [object](#screens-object). This object will also get injected into the parent's child components as `$screens` (or custom `injectKey`).
 
-```js
-const screens = useScreens({...});
-screens.cleanup();
-```
+See notes about cleanup[^2].
 
-2. Inject the `$screens` reactive object into nested components.
+### Step 2. Inject the `$screens` reactive object into nested components.
 
 ```html
 <!-- MyComponent.vue -->
@@ -76,7 +76,9 @@ screens.cleanup();
 </script>
 ```
 
-The value of `screens` is a reactive object of size keys mapped to the matched status of their respective media query.
+#### Screens Object
+
+The value of `screens` in the example above is a reactive object of size keys mapped to the match status of their respective media query.
 
 In the example above, if the viewport is '800px', then the `screens` value would be
 
@@ -89,6 +91,8 @@ In the example above, if the viewport is '800px', then the `screens` value would
 }
 ```
 
+This object also provides the following reserved properties and functions (`list`, `listMap()`, `current`, `currentMap()` and `cleanup()`).
+
 #### List Matching Screens
 
 The `list` computed property returns a list of media-matched screen size keys.
@@ -97,14 +101,14 @@ The `list` computed property returns a list of media-matched screen size keys.
 console.log(screens.list.value); // ['sm', 'md']
 ```
 
-The `listMap()` function returns a reactive `list` mapped to custom values.
+The `listMap()` function returns a computed list of mapped values mapped to the current matched size keys.
 
 ```js
 const mappedList = screens.listMap({ sm: 1, md: 2, lg: 3, xl: 4 });
 console.log(mappedList.value); // [1, 2]
 ```
 
-### Current Screen
+#### Current Screen
 
 The `current` computed property returns the current max screen size key.
 
@@ -112,22 +116,38 @@ The `current` computed property returns the current max screen size key.
 console.log(screens.current.value); // 'md'
 ```
 
-The `currentMap()` function returns a computed property with the `current` size key mapped to a custom value. The default value (2nd argument) will return if no screen sizes are matched.
+The `currentMap()` function returns a computed value mapped to the `current` value. The default value (2nd argument) will return if no screen sizes are matched.
 
 ```js
 const currentMap = screens.currentMap({ sm: 1, md: 2, lg: 3, xl: 4 }, 0);
 console.log(currentMap.value); // 2
 ```
 
-### Screens Plugin
+[^1]: The following are valid screen config values.
+
+```js
+useScreens(['100px', '200px']); // Raw strings
+useScreens({ sm: '100px', md: '200px' }); // Object with string values
+useScreens({ sm: { min: '100px' }, md: { max: '100px' } }); // Object with object values
+useScreens({ sm: [{ min: '100px' }, { max: '200px' }] }); // Object with object array (multiple values)
+```
+
+[^2]: Event cleanup happens automatically when the parent component is unmounted, but can be manually called if needed.
+
+```js
+const screens = useScreens({...});
+screens.cleanup();
+```
+
+## Screens Plugin
 
 The `screens` plugin is exactly like the `useScreens` method, but allows for a screen configuration to be used application-wide.
 
-1. Import the plugin.
+### Step 1. Import the plugin.
 
 ```js
 // main.js
-import { screens } from 'vue-media-query';
+import { screens } from 'vue-screen-utils';
 
 // Use plugin with optional config
 app.use(screens, {
@@ -138,4 +158,4 @@ app.use(screens, {
 });
 ```
 
-2. Repeat step 2 from the _Use Screens_ method above.
+### Step 2. Repeat step 2 from the [_Use Screens_](#use-screens) method above.
