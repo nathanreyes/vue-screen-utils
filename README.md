@@ -123,8 +123,7 @@ const currentMap = screens.currentMap({ sm: 1, md: 2, lg: 3, xl: 4 }, 0);
 console.log(currentMap.value); // 2
 ```
 
-[^1]
-The following are valid screen config values.
+[^1]: The following are valid screen config values.
 
 ```js
 useScreens(['100px', '200px']); // Raw strings
@@ -133,8 +132,7 @@ useScreens({ sm: { min: '100px' }, md: { max: '100px' } }); // Object with objec
 useScreens({ sm: [{ min: '100px' }, { max: '200px' }] }); // Object with object array (multiple values)
 ```
 
-[^2]
-Event cleanup happens automatically when the parent component is unmounted, but can be manually called if needed.
+[^2]: Event cleanup happens automatically when the parent component is unmounted, but can be manually called if needed.
 
 ```js
 const screens = useScreens({...});
