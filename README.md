@@ -44,16 +44,21 @@ Note: The configuration object should order the keys from smallest size to large
 <script setup>
   import { useScreens } from 'vue-media-query';
 
-  useScreens({
-    sm: '640px', // (min-width: 640px)
-    md: '768px', // (min-width: 768px)
-    lg: '1024px', // (min-width: 1024px)
-    xl: '1280px', // (min-width: 1280px)
-  });
+  useScreens(
+    {
+      sm: '640px', // (min-width: 640px)
+      md: '768px', // (min-width: 768px)
+      lg: '1024px', // (min-width: 1024px)
+      xl: '1280px', // (min-width: 1280px)
+    },
+    {
+      // injectKey: $sq, (Optional custom inject key)
+    }
+  );
 </script>
 ```
 
-A `$screens` object will be inject into child components. Cleanup will happen automatically when the parent component is unmounted, but can be manually called if needed.
+A `$screens` (or custom inject key) object will be inject into child components. Cleanup will happen automatically when the parent component is unmounted, but can be manually called if needed.
 
 ```js
 const screens = useScreens({...});

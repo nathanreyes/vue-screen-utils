@@ -1,15 +1,15 @@
 import { App, Plugin } from 'vue';
 import initScreens from '../utils/initScreens';
-import { Screens } from '../types';
+import { Screens, ScreensOptions, defaultInjectKey } from '../types';
 
 const plugin: Plugin = {
-  install: (app: App, screens?: Screens) => {
-    // Inject a globally available $screens() method
-    // app.config.globalProperties.$screens = (config) => {
-    //   setupQueries();
-    // };
+  install: (app: App, screens?: Screens, opts?: ScreensOptions) => {
     const s = initScreens(screens);
-    app.provide('$screens', s);
+    const key = opts?.injectKey || defaultInjectKey;
+    // Inject a globally available screens object method
+    app.config.globalProperties[key] = s;
+    // Provide screens object
+    app.provide(key, s);
   },
 };
 

@@ -23,7 +23,11 @@ export interface ScreensState {
   matches: any;
   hasSetup: boolean;
 }
-export interface ScreensOptions extends ConfigurableWindow {}
+export interface ScreensOptions extends ConfigurableWindow {
+  injectKey?: string;
+}
 
 export type MediaQueryCallback = (ev?: MediaQueryListEvent) => void;
 export interface MediaQueryOptions extends ConfigurableWindow {}
+
+export const defaultInjectKey = '$screens';
