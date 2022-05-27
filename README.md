@@ -39,7 +39,7 @@ Event cleanup happens automatically when the component is unmounted, but can be 
 
 ### Step 1. Import and call `useScreens`
 
-Import and call the `useScreens` function within a parent component, passing a config object that maps custom screen size keys to media query values. Reference valid screen value formats[^1].
+Import and call the `useScreens` function within a parent component, passing a config object that maps custom screen size keys to media query values.
 
 ```html
 <!--Parent.vue-->
@@ -125,7 +125,7 @@ The `current` computed property returns the current max screen size key.
 console.log(screens.current.value); // 'md'
 ```
 
-The `currentMap()` function returns a computed property value mapped to the `current` key. The default value (2nd argument) will return if no screen sizes are matched.
+The `currentMap()` function returns a computed value mapped to the `current` key. The default value (2nd argument) will return if no screen sizes are matched.
 
 ```js
 const currentMap = screens.currentMap({ sm: 1, md: 2, lg: 3, xl: 4 }, 0);
