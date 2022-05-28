@@ -1,34 +1,25 @@
 import clear from 'rollup-plugin-clear';
-import typescript from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 
 export default {
-  input: 'src/index.ts',
+  input: 'out-tsc/index.js',
   output: [
     {
       format: 'esm',
       file: 'dist/lib.mjs',
+      sourcemap: true,
     },
     {
       format: 'cjs',
       file: 'dist/lib.js',
+      sourcemap: true,
     },
   ],
+  external: ['vue'],
   plugins: [
     clear({
       targets: ['./dist'],
     }),
-    typescript({
-      tsconfigOverride: {
-        compilerOptions: {
-          declaration: true,
-        },
-        include: null,
-      },
-    }),
-    terser({
-      format: { comments: false },
-      compress: false,
-    }),
+    typescript(),
   ],
 };

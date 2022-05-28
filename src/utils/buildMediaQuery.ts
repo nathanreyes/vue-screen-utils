@@ -1,4 +1,4 @@
-import { NormalizedScreenValue } from 'types';
+import { NormalizedScreenValue } from '../types';
 
 // This function gratuitously borrowed from TailwindCSS
 // https://github.com/tailwindcss/tailwindcss/blob/master/src/util/buildMediaQuery.js

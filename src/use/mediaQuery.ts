@@ -1,14 +1,10 @@
 import { ref, watch, onUnmounted } from 'vue';
-import { MediaQueryCallback, MediaQueryOptions } from 'types';
+import { MediaQueryCallback, MediaQueryOptions } from '../types';
 
 export const isClient = typeof window !== 'undefined';
 export const defaultWindow = isClient ? window : undefined;
 
-export function useMediaQuery(
-  query: string, // "(min-width: 300px)",
-  callback: MediaQueryCallback,
-  options: MediaQueryOptions = {}
-) {
+export function useMediaQuery(query: string, callback: MediaQueryCallback, options: MediaQueryOptions = {}) {
   const { window = defaultWindow } = options;
   let mediaQuery: MediaQueryList | undefined;
   const isSupported = window && 'matchMedia' in window;
