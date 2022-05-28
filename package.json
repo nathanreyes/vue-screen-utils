@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "description": "A dependency-free collection of utility functions and plugins for using media queries in Vue 3.",
   "author": "Nathan Reyes <nathanreyes@me.com>",
-  "main": "dist/lib.js",
-  "module": "dist/lib.mjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/*"
   ],
   "scripts": {
-    "compile": "tsc",
+    "compile": "rimraf out-tsc && tsc",
     "bundle": "rollup -c",
-    "build": "tsc && rollup -c",
+    "build": "rimraf out-tsc && tsc && rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
+    "rimraf": "^3.0.2",
     "rollup": "^2.74.1",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-dts": "^4.2.2",

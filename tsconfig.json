@@ -9,7 +9,7 @@
     "strict": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "out-tsc/dst",
+    "declarationDir": "out-tsc/dts",
     "skipLibCheck": true,
     "esModuleInterop": false
   },
