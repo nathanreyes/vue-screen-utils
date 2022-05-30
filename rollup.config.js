@@ -1,4 +1,3 @@
-import clear from 'rollup-plugin-clear';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 
@@ -18,12 +17,7 @@ export default [
       },
     ],
     external: ['vue'],
-    plugins: [
-      clear({
-        targets: ['./dist'],
-      }),
-      typescript(),
-    ],
+    plugins: [typescript()],
   },
   {
     input: 'out-tsc/dts/index.d.ts',
