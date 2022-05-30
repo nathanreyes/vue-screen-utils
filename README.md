@@ -48,79 +48,74 @@ Event cleanup happens automatically when the component is unmounted, but can be 
 Import and call the `useScreens` function within a parent component, passing a config object that maps custom screen size keys to media query values.
 
 ```html
-<!--Parent.vue-->
+<!--ParentComponent.vue-->
 <script setup>
   import { useScreens } from 'vue-screen-utils';
 
   useScreens(
     // Order from smallest to largest
     {
-      sm: '640px', // (min-width: 640px)
-      md: '768px', // (min-width: 768px)
-      lg: '1024px', // (min-width: 1024px)
-      xl: '1280px', // (min-width: 1280px)
-    },
-    {
-      // injectKey: $sq, (Optional custom inject key)
+      xs: '0px', // (min-width: 0px)
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
     }
+    // {
+    //   injectKey: $sq, (Optional custom inject key)
+    // }
   );
 </script>
 ```
 
-The `useScreens` function accepts a variety of formats.
+The `useScreens` function accepts a config object with screen size keys mapped to query values. A simple pixel value of '640px' will get mapped to 'min-width: 640px'. It is recommended to map a mobile-first key with a '0px' value followed by larger sizes.
+
+The query value may be in a variety of formats.
 
 ```js
-useScreens(['100px', '200px']); // Raw strings
-useScreens({ sm: '100px', md: '200px' }); // Object with string values
-useScreens({ sm: { min: '100px' }, md: { max: '100px' } }); // Object with object values
-useScreens({ sm: [{ min: '100px' }, { max: '200px' }] }); // Object with object array (multiple values)
+useScreens(['0px', '100px', '200px']); // Raw strings
+useScreens({ xs: '0px', sm: '100px', md: '200px' }); // Object with string values
+useScreens({ xs: { min: '0px' }, sm: { min: '100px' }, md: { min: '100px' } }); // Object with object values
+useScreens({ xs: [{ min: '0px' }, { max: '100px' }] }); // Object with object array (multiple values)
 ```
 
-The `useScreens` function will return a reactive [object](#screens-object). This object will also get injected into the parent's child components as `$screens` (or custom `injectKey`).
+The `useScreens` function will return an [object](#screens-object) with a collection of utility properties and functions. This object will also get injected into the parent's child components as `$screens` (or custom `injectKey`).
 
 See notes about [cleanup](#cleanup).
 
-### Step 2. Inject the `$screens` reactive object into nested components.
+### Step 2. Inject the `$screens` object into nested components.
 
 ```html
-<!-- MyComponent.vue -->
+<!--ChildComponent.vue-->
 <script setup>
   import { inject } from 'vue';
-
-  const screens = inject('$screens');
+  // Desctructure utilities needed
+  const { matches, list, mapList, current, mapCurrent } = inject('$screens');
 </script>
 ```
 
-#### Screens Object
+#### Matches Object
 
-The value of `screens` in the example above is a reactive object of size keys mapped to the match status of their respective media query.
-
-In the example above, if the viewport is '800px', then the `screens` value would be
+The value of `matches` in the example above is a reactive object of size keys mapped to the match status of their respective media query.
 
 ```js
-{
-  sm: true,
-  md: true,
-  lg: false,
-  xl: false
-}
+// Viewport is 800px wide
+console.log(matches.value); // { xs: true, sm: true, md: true, lg: false, xl: false }
 ```
-
-This object also provides the following reserved properties and functions (`list`, `listMap()`, `current`, `currentMap()` and `cleanup()`).
 
 #### List Matching Screens
 
 The `list` computed property returns a list of media-matched screen size keys.
 
 ```js
-console.log(screens.list.value); // ['sm', 'md']
+console.log(list.value); // ['xs', 'sm', 'md']
 ```
 
-The `listMap()` function returns a computed property list of custom values mapped to the current matched size keys.
+The `mapList()` function returns a computed property list of custom values mapped to the current matched size keys.
 
 ```js
-const mappedList = screens.listMap({ sm: 1, md: 2, lg: 3, xl: 4 });
-console.log(mappedList.value); // [1, 2]
+const value = mapList({ xs: 0, sm: 1, md: 2, lg: 3, xl: 4 });
+console.log(value.value); // [0, 1, 2]
 ```
 
 #### Current Screen
@@ -128,14 +123,21 @@ console.log(mappedList.value); // [1, 2]
 The `current` computed property returns the current max screen size key.
 
 ```js
-console.log(screens.current.value); // 'md'
+console.log(current.value); // 'md'
 ```
 
-The `currentMap()` function returns a computed value mapped to the `current` key. The default value (2nd argument) will return if no screen sizes are matched.
+The `mapCurrent()` function returns a computed value mapped to the `current` key.
 
 ```js
-const currentMap = screens.currentMap({ sm: 1, md: 2, lg: 3, xl: 4 }, 0);
-console.log(currentMap.value); // 2
+const current = mapCurrent({ xs: 0, sm: 1, md: 2, lg: 3, xl: 4 });
+console.log(current.value); // 2
+```
+
+Pass an optional default value that gets returned when no screen sizes are matched.
+
+```js
+const current = mapCurrent({ lg: 3 }, 0);
+console.log(current.value); // 0
 ```
 
 #### Cleanup
@@ -143,13 +145,14 @@ console.log(currentMap.value); // 2
 Event cleanup happens automatically when the parent component is unmounted, but can be manually called if needed.
 
 ```js
-const screens = useScreens({...});
-screens.cleanup();
+// <!--ParentComponent.vue-->
+const { cleanup } = useScreens({...});
+cleanup();
 ```
 
 ## Screens Plugin
 
-The `screens` plugin is exactly like the `useScreens` method above, but allows for a screen configuration to be used application-wide.
+The `screens` plugin is exactly like the `useScreens` method above, but allows for a screen configuration to be used application-wide. Also, a global property will be created for easy access to `$screens` within templates.
 
 ### Step 1. Import the plugin.
 
@@ -159,11 +162,19 @@ import { screens } from 'vue-screen-utils';
 
 // Use plugin with optional config
 app.use(screens, {
-  sm: '640px', // (min-width: 640px)
-  md: '768px', // (min-width: 768px)
-  lg: '1024px', // (min-width: 1024px)
-  xl: '1280px', // (min-width: 1280px)
+  mobile: '0px',
+  tablet: '640px',
+  laptop: '1024px',
+  desktop: '1280px',
 });
 ```
 
 ### Step 2. Repeat step 2 from the [_Use Screens_](#use-screens) method above.
+
+### Step 3. Quick reference from component templates
+
+```html
+<template>
+  <GridComponent :columns="$screens.mapCurrent({ md: 2 }, 1)" />
+</template>
+```
