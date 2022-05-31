@@ -1,5 +1,6 @@
 import { onUnmounted, provide } from 'vue';
-import { Screens, ScreensOptions, defaultInjectKey } from '../types';
+import type { Screens, ScreensOptions } from '../types';
+import { defaultInjectKey } from '../types';
 import initScreens from '../utils/initScreens';
 
 export function useScreens(screens?: Screens, opts?: ScreensOptions) {

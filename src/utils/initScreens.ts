@@ -1,5 +1,6 @@
-import { ComputedRef, computed, reactive } from 'vue';
-import { ScreensState, Screens, ScreensConfig } from '../types';
+import type { ComputedRef } from 'vue';
+import { computed, reactive } from 'vue';
+import type { ScreensState, Screens, ScreensConfig } from '../types';
 import { normalizeScreens } from './normalizeScreens';
 import buildMediaQuery from './buildMediaQuery';
 import defaultScreens from './defaultScreens';

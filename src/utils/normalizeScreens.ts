@@ -1,4 +1,4 @@
-import { NormalizedScreen } from '../types';
+import type { NormalizedScreen } from '../types';
 
 /**
  * A function that normalizes the various forms that the screens object can be

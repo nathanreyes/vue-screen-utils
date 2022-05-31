@@ -1,5 +1,5 @@
 import { ref, onUnmounted } from 'vue';
-import { MediaQueryCallback, MediaQueryOptions } from '../types';
+import type { MediaQueryCallback, MediaQueryOptions } from '../types';
 
 export const isClient = typeof window !== 'undefined';
 export const defaultWindow = isClient ? window : undefined;

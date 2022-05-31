@@ -1,6 +1,7 @@
 import { App, Plugin } from 'vue';
+import type { Screens, ScreensOptions } from '../types';
 import initScreens from '../utils/initScreens';
-import { Screens, ScreensOptions, defaultInjectKey } from '../types';
+import { defaultInjectKey } from '../types';
 
 const plugin: Plugin = {
   install: (app: App, screens?: Screens, opts?: ScreensOptions) => {
