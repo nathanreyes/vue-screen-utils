@@ -3,7 +3,7 @@
 A dependency-free collection of utility functions and plugins for using media queries in Vue 3.
 
 - [**Use Screens**](#use-screens): Use function for mapping screen sizes to media query strings, arrays and custom values
-- [**Screens Plugin**](#screens-plugin): Same `useScreen` goodness but applied application-wide in a Vue plugin.
+- [**Screens Plugin**](#screens-plugin): Same `useScreens` goodness but applied application-wide in a Vue plugin.
 - [**Use Media Query**](#use-media-query): Use function for evaluating simple media query strings.
 - [**Use Resize Observer**](#use-resize-observer): Use function for evaluating changes made to an ref element's content rect.
 
