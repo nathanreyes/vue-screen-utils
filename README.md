@@ -2,43 +2,14 @@
 
 A dependency-free collection of utility functions and plugins for using media queries in Vue 3.
 
+- [**Use Screens**](#use-screens): Use function for mapping screen sizes to media query strings, arrays and custom values
+- [**Screens Plugin**](#screens-plugin): Same `useScreen` goodness but applied application-wide in a Vue plugin.
+- [**Use Media Query**](#use-media-query): Use function for evaluating simple media query strings.
+
 ## Install package
 
 ```console
 npm install vue-screen-utils
-```
-
-## Use Media Query
-
-Import and use the `useMediaQuery` function to evaluate a raw media query and return a boolean ref that will update with the media query.
-
-If you wish to receive a callback of the raw media query event, provide the callback function as the second argument.
-
-Event cleanup happens automatically when the component is unmounted, but can be manually triggered by setting the ref value to `undefined`.
-
-```html
-<template>
-  <div>
-    <h3 v-if="isHighDPI">This must look really sharp to you!</h3>
-    <h3 v-else>Can you even read this?</h3>
-  </div>
-</template>
-<script setup>
-  import { useMediaQuery } from 'vue-screen-utils';
-
-  // Use a media query that returns a boolean ref
-  const isHighDPI = useMediaQuery(
-    `@media only screen and (-moz-min-device-pixel-ratio: 2), 
-    only screen and (-o-min-device-pixel-ratio: 2/1), 
-    only screen and (-webkit-min-device-pixel-ratio: 2), 
-    only screen and (min-device-pixel-ratio: 2)`,
-    // Optional callback with raw event
-    (ev) => console.log(`Callback: ${ev}`)
-  );
-
-  // Cleanup manually if needed (auto-cleaned when component is unmounted)
-  isHighDPI.value = undefined;
-</script>
 ```
 
 ## Use Screens
@@ -103,21 +74,6 @@ The value of `matches` in the example above is a reactive object of size keys ma
 console.log(matches.value); // { xs: true, sm: true, md: true, lg: false, xl: false }
 ```
 
-#### List Matching Screens
-
-The `list` computed property returns a list of media-matched screen size keys.
-
-```js
-console.log(list.value); // ['xs', 'sm', 'md']
-```
-
-The `mapList()` function returns a computed property list of custom values mapped to the current matched size keys.
-
-```js
-const value = mapList({ xs: 0, sm: 1, md: 2, lg: 3, xl: 4 });
-console.log(value.value); // [0, 1, 2]
-```
-
 #### Current Screen
 
 The `current` computed property returns the current max screen size key.
@@ -138,6 +94,21 @@ Pass an optional default value that gets returned when no screen sizes are match
 ```js
 const current = mapCurrent({ lg: 3 }, 0);
 console.log(current.value); // 0
+```
+
+#### List Matching Screens
+
+The `list` computed property returns a list of media-matched screen size keys.
+
+```js
+console.log(list.value); // ['xs', 'sm', 'md']
+```
+
+The `mapList()` function returns a computed property list of custom values mapped to the current matched size keys.
+
+```js
+const value = mapList({ xs: 0, sm: 1, md: 2, lg: 3, xl: 4 });
+console.log(value.value); // [0, 1, 2]
 ```
 
 #### Cleanup
@@ -177,4 +148,54 @@ app.use(screens, {
 <template>
   <GridComponent :columns="$screens.mapCurrent({ md: 2 }, 1)" />
 </template>
+```
+
+## Use Media Query
+
+Import and use the `useMediaQuery` function to evaluate simple media query strings. The function returns a `matches` computed property with the media query match status and an optional `cleanup()` function.
+
+If you wish to receive a callback of the raw media query event, provide the callback function as the second argument.
+
+Event cleanup happens automatically when the component is unmounted, but can be manually called via the `cleanup()` function.
+
+```html
+<template>
+  <div>
+    <p class="high-dpi"><strong>High-DPI</strong>: {{ matches }}</p>
+    <button @click="cleanup">Cleanup</button>
+  </div>
+</template>
+<script setup>
+  import { useMediaQuery } from 'vue-screen-utils';
+
+  const { matches, cleanup } = useMediaQuery(`@media only screen and (-moz-min-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-device-pixel-ratio: 2)`);
+</script>
+```
+
+## Use Resize Observer
+
+Import and use the `useResizeObserver` function to evaluate changes made to an ref element's content rect. The function returns a reactive content `rect` object as well as a single computed rect parameters (`width`, `height`, `top`, `right`, `bottom`, `left`, `x`, `y`). It also returns an optional `cleanup()` function.
+
+If you wish to receive a callback of the raw resize observer event, provide the callback function as the second argument.
+
+The backing event is cleaned up when the component is unmounted, but can be manually called via the `cleanup()` function.
+
+```html
+<template>
+  <div>
+    <!-- Resizable text area element -->
+    <textarea ref="textEl">{{ rect }}</textarea>
+    <button @click="cleanup">Cleanup</button>
+  </div>
+</template>
+<script setup>
+  import { ref } from 'vue';
+  import { useResizeObserver } from '@vsu';
+
+  const textEl = ref(null);
+  const { rect, cleanup } = useResizeObserver(textEl);
+</script>
 ```

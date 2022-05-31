@@ -1,4 +1,4 @@
-import { ref, watch, onUnmounted } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { MediaQueryCallback, MediaQueryOptions } from '../types';
 
 export const isClient = typeof window !== 'undefined';
@@ -29,11 +29,7 @@ export function useMediaQuery(query: string, callback: MediaQueryCallback, optio
     matches.value = mediaQuery.matches;
   }
 
-  watch(
-    () => matches.value,
-    (val) => val === undefined && cleanup()
-  );
   onUnmounted(() => cleanup());
 
-  return matches;
+  return { matches, cleanup };
 }
