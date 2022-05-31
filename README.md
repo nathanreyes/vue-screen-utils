@@ -147,7 +147,7 @@ app.use(screens, {
 
 ```html
 <template>
-  <GridComponent :columns="$screens.mapCurrent({ md: 2 }, 1)" />
+  <GridComponent :columns="$screens.mapCurrent({ tablet: 2 }, 1)" />
 </template>
 ```
 
