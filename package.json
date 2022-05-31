@@ -1,6 +1,6 @@
 {
   "name": "vue-screen-utils",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "description": "A dependency-free collection of utility functions and plugins for using media queries in Vue 3.",
   "author": "Nathan Reyes <nathanreyes@me.com>",
   "main": "dist/index.js",
