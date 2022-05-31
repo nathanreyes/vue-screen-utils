@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useResizeObserver } from '@vsu';
+import Resizer from './Resizer.vue';
 
 const textEl = ref(null);
 const { width, height, top, right, bottom, left, x, y, rect, cleanup } = useResizeObserver(textEl);
@@ -18,7 +19,8 @@ const { width, height, top, right, bottom, left, x, y, rect, cleanup } = useResi
     <button @click="cleanup">Cleanup</button>
   </div>
   <div>
-    <textarea ref="textEl">{{ rect }}</textarea>
+    <!-- <textarea ref="textEl">{{ rect }}</textarea> -->
+    <Resizer ref="textEl">{{ rect }}</Resizer>
   </div>
 </template>
 <style>
