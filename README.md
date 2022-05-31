@@ -188,15 +188,17 @@ The backing event is cleaned up when the component is unmounted, but can be manu
 <template>
   <div>
     <!-- Resizable text area element -->
-    <textarea ref="textEl">{{ rect }}</textarea>
+    <textarea ref="textRef">{{ rect }}</textarea>
+    <!-- Component refs also supported -->
+    <!-- <MyComponent ref="componentRef" /> -->
     <button @click="cleanup">Cleanup</button>
   </div>
 </template>
 <script setup>
   import { ref } from 'vue';
-  import { useResizeObserver } from '@vsu';
+  import { useResizeObserver } from 'vue-screen-utils';
 
-  const textEl = ref(null);
-  const { rect, cleanup } = useResizeObserver(textEl);
+  const textRef = ref(null);
+  const { rect, cleanup } = useResizeObserver(textRef);
 </script>
 ```
