@@ -1,5 +1,6 @@
-import { Ref, ComputedRef, ref, watch, onUnmounted, computed } from 'vue';
-import { ResizeObserverCallback, ResizeObserverOptions } from '../types';
+import { ref, watch, onUnmounted, computed } from 'vue';
+import type { Ref, ComputedRef, ComponentPublicInstance } from 'vue';
+import type { ResizeObserverCallback, ResizeObserverOptions } from '../types';
 
 export const isClient = typeof window !== 'undefined';
 export const defaultWindow = isClient ? window : undefined;
@@ -7,13 +8,13 @@ export const defaultWindow = isClient ? window : undefined;
 type RectKey = 'width' | 'height' | 'top' | 'right' | 'bottom' | 'left' | 'x' | 'y';
 
 export function useResizeObserver(
-  target: Ref<HTMLElement | SVGElement | undefined | null>,
+  target: Ref<ComponentPublicInstance | HTMLElement | SVGElement | undefined | null>,
   callback?: ResizeObserverCallback,
   options: ResizeObserverOptions = {}
 ) {
   const { window = defaultWindow, ...resizeOptions } = options;
   let observer: ResizeObserver | undefined;
-  const isSupported = window && 'matchMedia' in window;
+  const isSupported = window && 'ResizeObserver' in window;
   const rect = ref<DOMRectReadOnly>();
 
   // Computed properties from rect
@@ -41,11 +42,11 @@ export function useResizeObserver(
 
   const stopWatch = watch(
     () => target.value,
-    (el) => {
+    (elOrComp) => {
       stopObserver();
-      if (isSupported && el) {
+      if (isSupported && elOrComp) {
         observer = new ResizeObserver(_callback);
-        observer.observe(el, resizeOptions);
+        observer.observe((elOrComp as ComponentPublicInstance).$el ?? elOrComp, resizeOptions);
       }
     },
     { immediate: true, flush: 'post' }
