@@ -2,15 +2,11 @@ import { ref, watch, onUnmounted } from 'vue';
 import type { Ref, ComponentPublicInstance } from 'vue';
 import type { ResizeObserverCallback, ResizeObserverOptions } from '../types';
 
-export const isClient = typeof window !== 'undefined';
-export const defaultWindow = isClient ? window : undefined;
-
 export function useResizeObserver(
   target: Ref<ComponentPublicInstance | HTMLElement | SVGElement | undefined | null>,
   callback?: ResizeObserverCallback,
   options: ResizeObserverOptions = {}
 ) {
-  const { window = defaultWindow, ...resizeOptions } = options;
   let observer: ResizeObserver | undefined;
   const rect = ref<DOMRectReadOnly | undefined>();
 
@@ -33,7 +29,7 @@ export function useResizeObserver(
       stopObserver();
       if (window && 'ResizeObserver' in window && elOrComp) {
         observer = new ResizeObserver(listener);
-        observer.observe((elOrComp as ComponentPublicInstance).$el ?? elOrComp, resizeOptions);
+        observer.observe((elOrComp as ComponentPublicInstance).$el ?? elOrComp, options);
       }
     },
     { immediate: true, flush: 'post' }

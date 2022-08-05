@@ -1,7 +1,3 @@
-export interface IWindow {
-  window?: Window;
-}
-
 export type Screens = Record<any, string>;
 export type ScreensConfig = Record<any, any>;
 export interface NormalizedScreenValue {
@@ -19,15 +15,14 @@ export interface ScreensState {
   matches: any;
   hasSetup: boolean;
 }
-export interface ScreensOptions extends IWindow {
+export interface ScreensOptions {
   injectKey?: string;
 }
 export const defaultInjectKey = '$screens';
 
 export type MediaQueryCallback = (ev?: MediaQueryListEvent) => void;
-export interface MediaQueryOptions extends IWindow {}
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void;
-export interface ResizeObserverOptions extends IWindow {
+export interface ResizeObserverOptions {
   box?: 'content-box' | 'border-box';
 }

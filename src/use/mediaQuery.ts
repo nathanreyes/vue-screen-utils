@@ -1,11 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
-import type { MediaQueryCallback, MediaQueryOptions } from '../types';
+import type { MediaQueryCallback } from '../types';
 
-export const isClient = typeof window !== 'undefined';
-export const defaultWindow = isClient ? window : undefined;
-
-export function useMediaQuery(query: string, callback: MediaQueryCallback, options: MediaQueryOptions = {}) {
-  const { window = defaultWindow } = options;
+export function useMediaQuery(query: string, callback: MediaQueryCallback) {
   let mediaQuery: MediaQueryList | undefined;
   const matches = ref(false);
 
