@@ -1,11 +1,9 @@
-import { ref, watch, onUnmounted, computed } from 'vue';
-import type { Ref, ComputedRef, ComponentPublicInstance } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
+import type { Ref, ComponentPublicInstance } from 'vue';
 import type { ResizeObserverCallback, ResizeObserverOptions } from '../types';
 
 export const isClient = typeof window !== 'undefined';
 export const defaultWindow = isClient ? window : undefined;
-
-type RectKey = 'width' | 'height' | 'top' | 'right' | 'bottom' | 'left' | 'x' | 'y';
 
 export function useResizeObserver(
   target: Ref<ComponentPublicInstance | HTMLElement | SVGElement | undefined | null>,
@@ -14,20 +12,9 @@ export function useResizeObserver(
 ) {
   const { window = defaultWindow, ...resizeOptions } = options;
   let observer: ResizeObserver | undefined;
-  const isSupported = window && 'ResizeObserver' in window;
-  const rect = ref<DOMRectReadOnly>();
+  const rect = ref<DOMRectReadOnly | undefined>();
 
-  // Computed properties from rect
-  const rectKeys: RectKey[] = ['width', 'height', 'top', 'right', 'bottom', 'left', 'x', 'y'];
-  const props = rectKeys.reduce((res, key) => {
-    res[key] = computed(() => {
-      if (rect.value == null) return NaN;
-      return rect.value[key];
-    });
-    return res;
-  }, {} as Record<RectKey, ComputedRef<number>>);
-
-  const _callback: ResizeObserverCallback = (...args) => {
+  const listener: ResizeObserverCallback = (...args) => {
     if (callback) callback(...args);
     const entry = args[0][0];
     rect.value = entry.contentRect;
@@ -44,8 +31,8 @@ export function useResizeObserver(
     () => target.value,
     (elOrComp) => {
       stopObserver();
-      if (isSupported && elOrComp) {
-        observer = new ResizeObserver(_callback);
+      if (window && 'ResizeObserver' in window && elOrComp) {
+        observer = new ResizeObserver(listener);
         observer.observe((elOrComp as ComponentPublicInstance).$el ?? elOrComp, resizeOptions);
       }
     },
@@ -59,5 +46,5 @@ export function useResizeObserver(
 
   onUnmounted(() => cleanup());
 
-  return { rect, ...props, cleanup };
+  return { rect, cleanup };
 }

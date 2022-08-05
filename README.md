@@ -178,11 +178,11 @@ Event cleanup happens automatically when the component is unmounted, but can be 
 
 ## Use Resize Observer
 
-Import and use the `useResizeObserver` function to evaluate changes made to an ref element's content rect. The function returns a reactive content `rect` object as well as a single computed rect parameters (`width`, `height`, `top`, `right`, `bottom`, `left`, `x`, `y`). It also returns an optional `cleanup()` function.
+Import and use the `useResizeObserver` function to evaluate changes made to an ref element's content rect. The function returns a reactive content `rect` object. It also returns an optional `cleanup()` function.
 
 If you wish to receive a callback of the raw resize observer event, provide the callback function as the second argument.
 
-The backing event is cleaned up when the component is unmounted, but can be manually called via the `cleanup()` function.
+The backing event is cleaned up when the component is unmounted, but `cleanup()` can be called manually.
 
 ```html
 <template>
