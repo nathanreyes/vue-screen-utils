@@ -1,3 +1,5 @@
+import { Ref } from 'vue';
+
 export type Screens = Record<any, string>;
 export type ScreensConfig = Record<any, any>;
 export interface NormalizedScreenValue {
@@ -26,3 +28,10 @@ export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry
 export interface ResizeObserverOptions {
   box?: 'content-box' | 'border-box';
 }
+
+export interface DarkModeClassConfig {
+  selector: string;
+  darkClass: string;
+}
+
+export type DarkModeConfig = Ref<boolean | 'system' | DarkModeClassConfig>;

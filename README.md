@@ -1,11 +1,12 @@
 # vue-screen-utils
 
-A dependency-free collection of utility functions and plugins for using media queries in Vue 3.
+A dependency-free collection of screen utility functions in Vue 3, written completely in TypeScript.
 
 - [**Use Screens**](#use-screens): Use function for mapping screen sizes to media query strings, arrays and custom values
 - [**Screens Plugin**](#screens-plugin): Same `useScreens` goodness but applied application-wide in a Vue plugin.
 - [**Use Media Query**](#use-media-query): Use function for evaluating simple media query strings.
 - [**Use Resize Observer**](#use-resize-observer): Use function for evaluating changes made to an ref element's content rect.
+- [**Use Dark Mode**](#use-dark-mode): Use function for observing dark mode using manual, class or system preference strategies.
 
 ## Install package
 
@@ -200,5 +201,99 @@ The backing event is cleaned up when the component is unmounted, but `cleanup()`
 
   const textRef = ref(null);
   const { rect, cleanup } = useResizeObserver(textRef);
+</script>
+```
+
+## Use Dark Mode
+
+Import and use the `useDarkMode` function to evaluate dark mode using a variety of strategies, based on the argument provided.
+
+```ts
+type useDarkMode = (config: DarkModeConfig) => DarkModeResult;
+
+type DarkModeConfig = Ref<boolean | 'system' | DarkModeClassConfig>;
+
+interface DarkModeClassConfig {
+  selector: string;
+  darkClass: string;
+}
+
+interface DarkModeResult {
+  isDark: Ref<boolean>;
+  displayMode: 'dark' | 'light';
+  cleanup: () => void;
+}
+```
+
+### Manual Strategy
+
+Pass a boolean value for `isDark` to set the dark mode manually.
+
+```html
+<template>
+  <div>Dark Mode Active: {{ isDark ? 'Yes' : 'No' }}</div>
+</template>
+
+<script setup>
+  import { useDarkMode } from 'vue-screen-utils';
+
+  const boolRef = ref(false);
+  const isDark = useDarkMode(boolRef);
+</script>
+```
+
+### System Preference Strategy
+
+Pass the `system` string to use the `Window.matchMedia()` API to read the user's system preference. This setting is continually watched to detect future changes made by the user.
+
+For example, to view the effect on the Mac, you can navigate to **System Preferences &#8250; General** and switch the **Appearance** setting between `Light`, `Dark` and `Auto`.
+
+```html
+<template>
+  <div>Dark Mode Active: {{ isDark ? 'Yes' : 'No' }}</div>
+</template>
+
+<script setup>
+  import { useDarkMode } from 'vue-screen-utils';
+
+  const strRef = ref('system');
+  const isDark = useDarkMode(strRef);
+</script>
+```
+
+### Class Strategy
+
+To use the class strategy, pass an object with the element `selector` and `darkClass` to check against.
+
+```ts
+interface DarkModeConfig {
+  selector: string;
+  darkClass: string;
+}
+```
+
+Any class updates made on the element are watched with a `MutationObserver` to detect future changes made by the user.
+
+```html
+<template>
+  <div>Dark Mode Active: {{ isDark ? 'Yes' : 'No' }}</div>
+</template>
+
+<script setup>
+  import { useDarkMode } from 'vue-screen-utils';
+
+  const objRef = ref({ selector: ':root', darkClass: 'dark' });
+  const isDark = useDarkMode(objRef);
+</script>
+```
+
+Because `:root` and `dark` are the default `selector` and `darkClass`, respectively, a simple object could be passed to achieve the same effect.
+
+```html
+<script setup>
+  import { useDarkMode } from 'vue-screen-utils';
+
+  const objRef = ref({});
+  const isDark = useDarkMode(objRef);
 </script>
 ```
