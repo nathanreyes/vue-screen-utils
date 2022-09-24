@@ -211,7 +211,7 @@ Import and use the `useDarkMode` function to evaluate dark mode using a variety 
 ```ts
 type useDarkMode = (config: DarkModeConfig) => DarkModeResult;
 
-type DarkModeConfig = Ref<boolean | 'system' | DarkModeClassConfig>;
+type DarkModeConfig = Ref<boolean | 'system' | Partial<DarkModeClassConfig>>;
 
 interface DarkModeClassConfig {
   selector: string;

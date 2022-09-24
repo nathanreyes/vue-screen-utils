@@ -34,4 +34,4 @@ export interface DarkModeClassConfig {
   darkClass: string;
 }
 
-export type DarkModeConfig = Ref<boolean | 'system' | DarkModeClassConfig>;
+export type DarkModeConfig = Ref<boolean | 'system' | Partial<DarkModeClassConfig>>;
