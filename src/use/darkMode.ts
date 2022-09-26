@@ -1,6 +1,10 @@
-import { ref, computed, onUnmounted, watch } from 'vue';
+import { Ref, ref, computed, onUnmounted, watch } from 'vue';
+export interface DarkModeClassConfig {
+  selector: string;
+  darkClass: string;
+}
 
-import type { DarkModeConfig, DarkModeClassConfig } from '../types';
+export type DarkModeConfig = Ref<boolean | 'system' | Partial<DarkModeClassConfig>>;
 
 export function useDarkMode(config: DarkModeConfig) {
   const isDark = ref(false);

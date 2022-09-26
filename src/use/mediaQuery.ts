@@ -1,5 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue';
-import type { MediaQueryCallback } from '../types';
+
+export type MediaQueryCallback = (ev?: MediaQueryListEvent) => void;
 
 export function useMediaQuery(query: string, callback: MediaQueryCallback) {
   let mediaQuery: MediaQueryList | undefined;

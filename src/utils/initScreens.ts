@@ -1,11 +1,26 @@
 import type { ComputedRef } from 'vue';
 import { computed, reactive } from 'vue';
-import type { ScreensState, Screens, ScreensConfig } from '../types';
-import { normalizeScreens } from './normalizeScreens';
+import { NormalizedScreen, normalizeScreens } from './normalizeScreens';
 import buildMediaQuery from './buildMediaQuery';
 import defaultScreens from './defaultScreens';
 
-export default function (screens?: Screens) {
+export type Screens = Record<any, string>;
+export type ScreensConfig = Record<any, any>;
+
+export interface ScreensOptions {
+  injectKey?: string;
+}
+
+interface ScreensState {
+  screens: NormalizedScreen[];
+  queries: Record<string, MediaQueryList>;
+  matches: any;
+  hasSetup: boolean;
+}
+
+export const defaultInjectKey = '$screens';
+
+export function initScreens(screens?: Screens) {
   const state = reactive<ScreensState>({
     screens: normalizeScreens(screens || defaultScreens),
     queries: {},

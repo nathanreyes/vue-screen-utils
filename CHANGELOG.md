@@ -5,3 +5,7 @@
 ## v1.0.0-beta.7
 
 - Fix argument type in `useDarkMode`.
+
+## v1.0.0-beta.8
+
+- Refactor type exports.

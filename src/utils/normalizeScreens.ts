@@ -1,4 +1,17 @@
-import type { NormalizedScreen } from '../types';
+export interface NormalizedScreenValue {
+  min: string;
+  max: string | undefined;
+  raw?: string | undefined;
+}
+
+export interface NormalizedScreen {
+  name: string;
+  values: NormalizedScreenValue[];
+}
+
+function resolveValue({ 'min-width': _minWidth, min = _minWidth, max, raw }: any = {}): NormalizedScreenValue {
+  return { min, max, raw };
+}
 
 /**
  * A function that normalizes the various forms that the screens object can be
@@ -38,10 +51,5 @@ export function normalizeScreens(screens: any, root = true): NormalizedScreen[] 
       return { name, values: [resolveValue(options)] };
     });
   }
-
   return normalizeScreens(Object.entries(screens ?? {}), false);
-}
-
-function resolveValue({ 'min-width': _minWidth, min = _minWidth, max, raw }: any = {}) {
-  return { min, max, raw };
 }

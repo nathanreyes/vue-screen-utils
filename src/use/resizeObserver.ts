@@ -1,6 +1,10 @@
 import { ref, watch, onUnmounted } from 'vue';
 import type { Ref, ComponentPublicInstance } from 'vue';
-import type { ResizeObserverCallback, ResizeObserverOptions } from '../types';
+
+export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void;
+export interface ResizeObserverOptions {
+  box?: 'content-box' | 'border-box';
+}
 
 export function useResizeObserver(
   target: Ref<ComponentPublicInstance | HTMLElement | SVGElement | undefined | null>,
