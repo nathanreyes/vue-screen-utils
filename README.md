@@ -209,20 +209,11 @@ The backing event is cleaned up when the component is unmounted, but `cleanup()`
 Import and use the `useDarkMode` function to evaluate dark mode using a variety of strategies, based on the argument provided.
 
 ```ts
-type useDarkMode = (config: DarkModeConfig) => DarkModeResult;
-
-type DarkModeConfig = Ref<boolean | 'system' | Partial<DarkModeClassConfig>>;
-
-interface DarkModeClassConfig {
-  selector: string;
-  darkClass: string;
-}
-
-interface DarkModeResult {
+declare function useDarkMode(config: Ref<boolean | 'system' | Partial<DarkModeClassConfig>>): {
   isDark: Ref<boolean>;
-  displayMode: 'dark' | 'light';
+  displayMode: ComputedRef<'dark' | 'light'>;
   cleanup: () => void;
-}
+};
 ```
 
 ### Manual Strategy
@@ -237,8 +228,8 @@ Pass a boolean value for `isDark` to set the dark mode manually.
 <script setup>
   import { useDarkMode } from 'vue-screen-utils';
 
-  const boolRef = ref(false);
-  const isDark = useDarkMode(boolRef);
+  const configRef = ref(false);
+  const isDark = useDarkMode(configRef);
 </script>
 ```
 
@@ -256,8 +247,8 @@ For example, to view the effect on the Mac, you can navigate to **System Prefere
 <script setup>
   import { useDarkMode } from 'vue-screen-utils';
 
-  const strRef = ref('system');
-  const isDark = useDarkMode(strRef);
+  const configRef = ref('system');
+  const isDark = useDarkMode(configRef);
 </script>
 ```
 
@@ -266,7 +257,7 @@ For example, to view the effect on the Mac, you can navigate to **System Prefere
 To use the class strategy, pass an object with the element `selector` and `darkClass` to check against.
 
 ```ts
-interface DarkModeConfig {
+interface DarkModeClassConfig {
   selector: string;
   darkClass: string;
 }
@@ -282,8 +273,8 @@ Any class updates made on the element are watched with a `MutationObserver` to d
 <script setup>
   import { useDarkMode } from 'vue-screen-utils';
 
-  const objRef = ref({ selector: ':root', darkClass: 'dark' });
-  const isDark = useDarkMode(objRef);
+  const configRef = ref({ selector: ':root', darkClass: 'dark' });
+  const isDark = useDarkMode(configRef);
 </script>
 ```
 
@@ -293,7 +284,7 @@ Because `:root` and `dark` are the default `selector` and `darkClass`, respectiv
 <script setup>
   import { useDarkMode } from 'vue-screen-utils';
 
-  const objRef = ref({});
-  const isDark = useDarkMode(objRef);
+  const configRef = ref({});
+  const isDark = useDarkMode(configRef);
 </script>
 ```

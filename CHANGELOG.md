@@ -9,3 +9,7 @@
 ## v1.0.0-beta.8
 
 - Refactor type exports.
+
+## v1.0.0-beta.9
+
+- Update `DarkModeConfig` type.
