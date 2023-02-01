@@ -1,5 +1,6 @@
 import { ref, watch, onUnmounted } from 'vue';
 import type { Ref, ComponentPublicInstance } from 'vue';
+import { windowHasFeature } from '../utils/windowFeature';
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void;
 export interface ResizeObserverOptions {
@@ -31,7 +32,7 @@ export function useResizeObserver(
     () => target.value,
     (elOrComp) => {
       stopObserver();
-      if (window && 'ResizeObserver' in window && elOrComp) {
+      if (windowHasFeature('ResizeObserver') && elOrComp) {
         observer = new ResizeObserver(listener);
         observer.observe((elOrComp as ComponentPublicInstance).$el ?? elOrComp, options);
       }

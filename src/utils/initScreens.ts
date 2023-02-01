@@ -3,6 +3,7 @@ import { computed, reactive } from 'vue';
 import { NormalizedScreen, normalizeScreens } from './normalizeScreens';
 import buildMediaQuery from './buildMediaQuery';
 import defaultScreens from './defaultScreens';
+import { windowHasFeature } from './window';
 
 export type Screens = Record<any, string>;
 export type ScreensConfig = Record<any, any>;
@@ -64,7 +65,7 @@ export function initScreens(screens?: Screens) {
     state.matches = {};
   }
 
-  if (state.hasSetup || !window || !('matchMedia' in window)) return;
+  if (state.hasSetup || !windowHasFeature('matchMedia')) return;
   cleanup();
   state.queries = state.screens.reduce((result, { name, values }) => {
     const mediaQuery = window.matchMedia(buildMediaQuery(values));

@@ -1,4 +1,5 @@
 import { Ref, ref, computed, onUnmounted, watch } from 'vue';
+import { windowHasFeature } from '../utils/window';
 
 export interface DarkModeClassConfig {
   selector: string;
@@ -19,7 +20,7 @@ export function useDarkMode(config: Ref<DarkModeConfig>) {
   }
 
   function setupSystem() {
-    if (window && 'matchMedia' in window) {
+    if (windowHasFeature('matchMedia')) {
       mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       mediaQuery.addEventListener('change', mqListener);
       isDark.value = mediaQuery.matches;

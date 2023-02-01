@@ -1,4 +1,5 @@
 import { ref, onMounted, onUnmounted } from 'vue';
+import { windowHasFeature } from '../utils/window';
 
 export type MediaQueryCallback = (ev?: MediaQueryListEvent) => void;
 
@@ -20,7 +21,7 @@ export function useMediaQuery(query: string, callback: MediaQueryCallback) {
 
   function setup(newQuery = query) {
     cleanup();
-    if (window && 'matchMedia' in window && newQuery) {
+    if (windowHasFeature('matchMedia') && newQuery) {
       mediaQuery = window.matchMedia(newQuery);
       mediaQuery.addEventListener('change', listener);
       matches.value = mediaQuery.matches;
