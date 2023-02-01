@@ -13,3 +13,7 @@
 ## v1.0.0-beta.9
 
 - Update `DarkModeConfig` type.
+
+## v1.0.0-beta.10
+
+- Fix SSR bugs
