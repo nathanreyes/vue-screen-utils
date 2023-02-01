@@ -65,16 +65,17 @@ export function initScreens(screens?: Screens) {
     state.matches = {};
   }
 
-  if (state.hasSetup || !windowHasFeature('matchMedia')) return;
-  cleanup();
-  state.queries = state.screens.reduce((result, { name, values }) => {
-    const mediaQuery = window.matchMedia(buildMediaQuery(values));
-    mediaQuery.addEventListener('change', refreshMatches);
-    result[name] = mediaQuery;
-    return result;
-  }, {} as Record<string, MediaQueryList>);
-  state.hasSetup = true;
-  refreshMatches();
+  if (!state.hasSetup && windowHasFeature('matchMedia')) {
+    cleanup();
+    state.queries = state.screens.reduce((result, { name, values }) => {
+      const mediaQuery = window.matchMedia(buildMediaQuery(values));
+      mediaQuery.addEventListener('change', refreshMatches);
+      result[name] = mediaQuery;
+      return result;
+    }, {} as Record<string, MediaQueryList>);
+    refreshMatches();
+    state.hasSetup = true;
+  }
 
   return { matches: state.matches, list, mapList, current, mapCurrent, cleanup };
 }
