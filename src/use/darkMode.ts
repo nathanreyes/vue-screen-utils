@@ -1,5 +1,5 @@
 import { Ref, ref, computed, onUnmounted, watch } from 'vue';
-import { windowHasFeature } from '../utils/window';
+import { windowExists, windowHasFeature } from '../utils/window';
 
 export interface DarkModeClassConfig {
   selector: string;
@@ -35,7 +35,7 @@ export function useDarkMode(config: Ref<DarkModeConfig>) {
 
   function setupClass(config: DarkModeClassConfig) {
     const { selector = ':root', darkClass = 'dark' } = config;
-    if (document && selector && darkClass) {
+    if (windowExists() && selector && darkClass) {
       const el = document.querySelector(selector);
       if (el) {
         mutationObserver = new MutationObserver(moListener);

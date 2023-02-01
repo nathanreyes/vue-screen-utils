@@ -1,3 +1,7 @@
+export function windowExists() {
+  return typeof window !== 'undefined';
+}
+
 export function windowHasFeature(feature: string) {
-  return typeof window !== 'undefined' && feature in window;
+  return windowExists() && feature in window;
 }

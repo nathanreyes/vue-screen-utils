@@ -21,3 +21,7 @@
 ## v1.0.0-beta.11
 
 - Fix `initScreens` setup
+
+## v1.0.0-beta.12
+
+- Fix `document` reference
