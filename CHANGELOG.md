@@ -17,3 +17,7 @@
 ## v1.0.0-beta.10
 
 - Fix SSR bugs
+
+## v1.0.0-beta.11
+
+- Fix `initScreens` setup
