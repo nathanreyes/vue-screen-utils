@@ -1,6 +1,6 @@
 import { ref, watch, onUnmounted } from 'vue';
 import type { Ref, ComponentPublicInstance } from 'vue';
-import { windowHasFeature } from '../utils/windowFeature';
+import { windowHasFeature } from '../utils/window';
 
 export type ResizeObserverCallback = (entries: ReadonlyArray<ResizeObserverEntry>, observer: ResizeObserver) => void;
 export interface ResizeObserverOptions {
