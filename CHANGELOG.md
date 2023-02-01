@@ -25,3 +25,7 @@
 ## v1.0.0-beta.12
 
 - Fix `document` reference
+
+## v1.0.0-beta.13
+
+- Fix build error
